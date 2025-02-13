@@ -1,0 +1,21 @@
+name: Terraform
+
+on:
+  push:
+    branches:
+      - development
+      - main
+  pull_request:
+    branches:
+      - development
+      - main
+
+jobs:
+    build-development:
+        if: github.ref == 'refs/heads/development'
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+
+       
