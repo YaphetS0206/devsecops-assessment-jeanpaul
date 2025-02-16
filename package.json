@@ -1,0 +1,23 @@
+{
+  "name": "devsecops-assessment-jeanpaul",
+  "version": "1.0.0",
+  "description": "## Ramas principales - **main**: Código listo para producción. - **develop**: Estado más reciente del desarrollo en curso.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YaphetS0206/devsecops-assessment-jeanpaul.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YaphetS0206/devsecops-assessment-jeanpaul/issues"
+  },
+  "homepage": "https://github.com/YaphetS0206/devsecops-assessment-jeanpaul#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

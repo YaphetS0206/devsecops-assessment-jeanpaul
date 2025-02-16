@@ -1,19 +1,37 @@
-name: Terraform
+name: CI_CD Workflow
 
 on:
   push:
     branches:
-      - development
-      - main
+      - develop
+      - feature/**
   pull_request:
     branches:
-      - development
       - main
 
 jobs:
-    build-development:
-        if: github.ref == 'refs/heads/development'
+    build-feature:
+        if: github.ref == 'refs/heads/feature'
         runs-on: ubuntu-latest
         steps:
         - name: Checkout code
           uses: actions/checkout@v3
+        # Paso 2: Configurar Google Cloud SDK
+        - name: Set up Google Cloud SDK
+          uses: google-github-actions/setup-gcloud@v1
+          with:
+            project_id: ${{ secrets.GCP_PROJECT_ID }}
+            service_account_key: ${{ secrets.GCP_SA_KEY }}
+            export_default_credentials: true
+
+           # Paso 3: Autenticar Docker con Google Container Registry (GCR)
+        - name: Authenticate Docker with GCR
+          run: gcloud auth configure-docker
+
+        # Paso 4: Construir la imagen Docker
+        - name: Build Docker image
+          run: docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ vars.name_app}}:latest .
+
+        # Paso 5: Subir la imagen a GCR
+        - name: Push Docker image to GCR
+          run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ vars.name_app}}:latest
