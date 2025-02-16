@@ -11,7 +11,7 @@ on:
 
 jobs:
     build-feature:
-        if: github.ref == 'refs/heads/feature'
+        if: startsWith(github.ref, 'refs/heads/feature/')
         runs-on: ubuntu-latest
         steps:
         - name: Checkout code
