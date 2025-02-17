@@ -10,6 +10,57 @@ on:
       - main
 
 jobs:
+    # Paso 1: Análisis de Código Estático con CodeQL
+    codeql-analysis:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+
+        - name: Initialize CodeQL
+          uses: github/codeql-action/init@v2
+          with:
+            languages: 'javascript' 
+
+        - name: Perform CodeQL Analysis
+          uses: github/codeql-action/analyze@v2
+
+    dependency-check:
+        runs-on: ubuntu-latest
+        needs: codeql-analysis
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v3
+
+          - name: Set up Node.js
+            uses: actions/setup-node@v3
+            with:
+              node-version: '16'
+          - name: Install dependencies
+            run: npm install
+      
+          - name: Run npm audit
+            run: npm audit --audit-level=high
+
+  # Paso 3: Ejecución de Pruebas Unitarias
+    unit-tests:
+        runs-on: ubuntu-latest
+        needs: dependency-check
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v3
+
+          - name: Set up Node.js
+            uses: actions/setup-node@v3
+            with:
+              node-version: '16'
+
+          - name: Install dependencies
+            run: npm install
+
+          - name: Run unit tests
+            run: npm test
+
     build-feature:
         if: startsWith(github.ref, 'refs/heads/feature/')
         runs-on: ubuntu-latest
