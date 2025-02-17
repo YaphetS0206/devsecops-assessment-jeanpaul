@@ -17,21 +17,25 @@ jobs:
         - name: Checkout code
           uses: actions/checkout@v3
         # Paso 2: Configurar Google Cloud SDK
+        - name: Authenticate to Google Cloud
+          uses: google-github-actions/auth@v1
+          with:
+            credentials_json: ${{ secrets.GCP_SA_KEY }}
+
         - name: Set up Google Cloud SDK
           uses: google-github-actions/setup-gcloud@v1
           with:
             project_id: ${{ secrets.GCP_PROJECT_ID }}
-            service_account_key: ${{ secrets.GCP_SA_KEY }}
-            export_default_credentials: true
+
 
            # Paso 3: Autenticar Docker con Google Container Registry (GCR)
         - name: Authenticate Docker with GCR
-          run: gcloud auth configure-docker
+          run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
         # Paso 4: Construir la imagen Docker
         - name: Build Docker image
-          run: docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ vars.name_app}}:latest .
+          run: docker build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.name_app}}:latest .
 
         # Paso 5: Subir la imagen a GCR
         - name: Push Docker image to GCR
-          run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ vars.name_app}}:latest
+          run: docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.name_app}}:latest
