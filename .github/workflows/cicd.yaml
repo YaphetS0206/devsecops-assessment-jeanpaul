@@ -34,8 +34,8 @@ jobs:
 
         # Paso 4: Construir la imagen Docker
         - name: Build Docker image
-          run: docker build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.name_app}}:latest .
+          run: docker build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/devsecops/${{ vars.name_app}}:latest .
 
         # Paso 5: Subir la imagen a GCR
         - name: Push Docker image to GCR
-          run: docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}
+          run: docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/devsecops/${{ vars.name_app}}:latest
