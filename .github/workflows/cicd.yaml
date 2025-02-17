@@ -1,8 +1,9 @@
 name: CI_CD Workflow
-
 on:
   push:
     branches:
+      - feature/*
+      - hotfix/*
       - main
       - develop
       - feature/*
@@ -27,9 +28,6 @@ jobs:
           uses: github/codeql-action/analyze@v3
           with:
             output: codeql-results/
-
-        - name: List generated files
-          run: ls -R
 
         - name: Upload CodeQL results
           if: success() && contains(github.workspace, 'codeql-results')
