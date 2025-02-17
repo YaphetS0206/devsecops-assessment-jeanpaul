@@ -38,4 +38,4 @@ jobs:
 
         # Paso 5: Subir la imagen a GCR
         - name: Push Docker image to GCR
-          run: docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.name_app}}:latest
+          run: docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}
