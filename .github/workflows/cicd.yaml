@@ -22,9 +22,14 @@ jobs:
             languages: 'javascript'
         - name: Perform CodeQL Analysis
           uses: github/codeql-action/analyze@v3
-        - name: Create dist directory
-          run: mkdir -p codeql-results
+          with:
+            output: codeql-results/
+            
+        - name: List generated files
+          run: ls -R
+
         - name: Upload CodeQL results
+          if: success() && contains(github.workspace, 'codeql-results')
           uses: actions/upload-artifact@v4
           with:
             name: codeql-results
