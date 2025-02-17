@@ -3,6 +3,8 @@ name: CI_CD Workflow
 on:
   push:
     branches:
+      - main
+      - develop
       - feature/*
       - hotfix/*
   pull_request:
