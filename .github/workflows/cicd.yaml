@@ -1,5 +1,4 @@
 name: CI_CD Workflow
-
 on:
   push:
     branches:
