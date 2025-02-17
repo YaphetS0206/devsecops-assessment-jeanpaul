@@ -1,4 +1,4 @@
-# Estrategia de Branching
+# Estrategia de Branching GITFLOW 
 
 ## Ramas principales
 - **main**: Código listo para producción.
@@ -14,4 +14,7 @@
 - La rama `main` requiere al menos un aprobador y que todas las pruebas pasen.
 - No se permiten commits directos en `main` ni `develop`.
 
-## test
+## Actions
+- Los actions solo seran ejecutados cuando se haga el merge a cualquiera de las ramas main o develop 
+
+
