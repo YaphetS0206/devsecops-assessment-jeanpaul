@@ -15,6 +15,6 @@
 - No se permiten commits directos en `main` ni `develop`.
 
 ## Actions
-- Los actions solo seran ejecutados cuando se haga el merge a cualquiera de las ramas main o develop 
-
+- El Build y Deploy solo seran ejecutados cuando se haga el merge a cualquiera de las ramas main o develop 
+- Las ramas secundarias solo llegaran hasta el proceso de unit test.
 

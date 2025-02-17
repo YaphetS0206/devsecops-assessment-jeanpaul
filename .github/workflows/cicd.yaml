@@ -5,9 +5,12 @@ on:
     branches:
       - main
       - develop
+      - feature/*
+      - hotfix/*
   pull_request:
     branches:
       - main
+      - develop
 
 jobs:
     # Step 1: Review Static CodeQL 
@@ -84,14 +87,14 @@ jobs:
               name: packaged-app
               path: app.zip
     #Step 4: Build and deploy
-    build-and-deploy:
+    build-and-deploy-development:
       runs-on: ubuntu-latest
       needs: unit-tests
-      if: startsWith(github.ref, 'refs/heads/develop') || startsWith(github.ref, 'refs/heads/main')
+      if: github.ref == 'refs/heads/develop'
       steps:
         - name: Checkout code
           uses: actions/checkout@v3
-        # Paso 4.2: Configuration Google Cloud SDK
+
         - name: Authenticate to Google Cloud
           uses: google-github-actions/auth@v1
           with:
@@ -102,14 +105,37 @@ jobs:
           with:
             project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-           # Paso 4.3: Authentication with Google Container Registry (GCR)
+           # Step 4.3: Authentication with Google Container Registry (GCR)
         - name: Authenticate Docker with GCR
           run: gcloud auth configure-docker us-central1-docker.pkg.dev
+        - name: Build Docker image
+          run: docker build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/devsecops-dev/${{ vars.name_app}}:latest .
+        - name: Push Docker image to GCR
+          run: docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/devsecops-dev/${{ vars.name_app}}:latest
 
-        # Paso 4.4: Build Image Docker
+          #Step 4: Build and deploy
+    build-and-deploy-production:
+      runs-on: ubuntu-latest
+      needs: unit-tests
+      if: github.ref == 'refs/heads/main'
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+
+        - name: Authenticate to Google Cloud
+          uses: google-github-actions/auth@v1
+          with:
+            credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+        - name: Set up Google Cloud SDK
+          uses: google-github-actions/setup-gcloud@v1
+          with:
+            project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+           # Step 4.3: Authentication with Google Container Registry (GCR)
+        - name: Authenticate Docker with GCR
+          run: gcloud auth configure-docker us-central1-docker.pkg.dev
         - name: Build Docker image
           run: docker build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/devsecops/${{ vars.name_app}}:latest .
-
-        # Paso 4.5: Upload image to GCR
         - name: Push Docker image to GCR
           run: docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/devsecops/${{ vars.name_app}}:latest
