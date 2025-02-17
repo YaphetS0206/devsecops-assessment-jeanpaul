@@ -4,9 +4,9 @@
   "description": "## Ramas principales - **main**: Código listo para producción. - **develop**: Estado más reciente del desarrollo en curso.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node ./src/index.js",
     "test": "jest",
-    "build": "rm -rf dist && mkdir dist && cp -r src/* dist/ && npm prune --production"
+    "build": "mkdir -p dist && cp -r src/* dist/ && npm prune --production"
   },
   "repository": {
     "type": "git",

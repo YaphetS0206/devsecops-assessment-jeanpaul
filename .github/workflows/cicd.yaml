@@ -24,7 +24,7 @@ jobs:
           uses: github/codeql-action/analyze@v3
           with:
             output: codeql-results/
-            
+
         - name: List generated files
           run: ls -R
 
@@ -63,21 +63,26 @@ jobs:
               node-version: '16'
           - name: Install dependencies
             run: npm install
+
+          - name: Run unit tests
+            run: npm test || echo "Unit tests failed. Check logs for details."
+
           - name: Build project
             run: npm run build
+
           - name: Create dist directory
             run: mkdir -p dist
           - name: Package artifacts
             run: zip -r app.zip dist/
+
           - name: Validate artifact
             run: test -f app.zip || (echo "Artifact not found!" && exit 1)
+
           - name: Upload artifacts
             uses: actions/upload-artifact@v4
             with:
               name: packaged-app
               path: app.zip
-          - name: Run unit tests
-            run: npm test || echo "Unit tests failed. Check logs for details."
     #Step 4: Build and deploy
     build-and-deploy:
       runs-on: ubuntu-latest
