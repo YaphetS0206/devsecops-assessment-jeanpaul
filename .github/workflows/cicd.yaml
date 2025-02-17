@@ -58,6 +58,18 @@ jobs:
           - name: Install dependencies
             run: npm install
 
+          - name: Build project
+            run: npm run build
+
+          - name: Package artifacts
+            run: zip -r app.zip dist/
+
+          - name: Upload artifacts
+            uses: actions/upload-artifact@v3
+            with:
+              name: packaged-app
+              path: app.zip
+
           - name: Run unit tests
             run: npm test
 

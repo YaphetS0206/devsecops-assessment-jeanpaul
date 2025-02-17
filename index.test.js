@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('./index'); // Importa la aplicación Express
+const app = require('./src/index'); // Importa la aplicación Express
 
 describe('GET /', () => {
   it('should return the form HTML', async () => {
