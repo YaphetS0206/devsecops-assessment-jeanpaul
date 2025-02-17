@@ -92,7 +92,7 @@ jobs:
       steps:
         - name: Checkout code
           uses: actions/checkout@v3
-        # Paso 4.2: Configuration Google Cloud SDK
+
         - name: Authenticate to Google Cloud
           uses: google-github-actions/auth@v1
           with:
@@ -103,14 +103,10 @@ jobs:
           with:
             project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-           # Paso 4.3: Authentication with Google Container Registry (GCR)
+           # Step 4.3: Authentication with Google Container Registry (GCR)
         - name: Authenticate Docker with GCR
           run: gcloud auth configure-docker us-central1-docker.pkg.dev
-
-        # Paso 4.4: Build Image Docker
         - name: Build Docker image
           run: docker build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/devsecops/${{ vars.name_app}}:latest .
-
-        # Paso 4.5: Upload image to GCR
         - name: Push Docker image to GCR
           run: docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/devsecops/${{ vars.name_app}}:latest
